@@ -1,0 +1,24 @@
+services:
+  observability:
+    build:
+      context: .
+      dockerfile: dockerfile.yml
+    environment:
+      - DD_ENV=production  # Defina o ambiente para produção ou outro valor relevante
+      - DD_SERVICE=my-java-app  # Nome do serviço da aplicação
+      - DD_VERSION=1.0.0  # Versão da aplicação
+      - DD_AGENT_HOST=datadog-agent  # Nome do contêiner do Datadog Agent
+      - DD_TRACE_AGENT_PORT=8126  # Porta do agente do Datadog para traces
+      - DD_LOGS_INJECTION=true  # Ativa a injeção de logs no Datadog
+    labels:
+      - com.datadoghq.tags.env=production  # Tag de ambiente
+      - com.datadoghq.tags.service=my-java-app  # Tag de serviço
+      - com.datadoghq.tags.version=1.0.0  # Tag de versão
+    ports:
+      - "8080:8080"
+    networks:
+      - estudo
+
+networks:
+  estudo:  # Definição da rede personalizada
+    external: true
